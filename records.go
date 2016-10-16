@@ -1,17 +1,18 @@
-package auroradns_client
+package auroradnsclient
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/Sirupsen/logrus"
-	"github.com/edeckers/auroradns_client/records"
+	"github.com/edeckers/auroradnsclient/records"
 )
 
-func (self *AuroraDNSClient) GetRecords(zoneId string) ([]records.GetRecordsResponse, error) {
-	logrus.Debugf("GetRecords(%s)", zoneId)
-	relativeUrl := fmt.Sprintf("zones/%s/records", zoneId)
+// GetRecords returns a list of all records in given zone
+func (client *AuroraDNSClient) GetRecords(zoneID string) ([]records.GetRecordsResponse, error) {
+	logrus.Debugf("GetRecords(%s)", zoneID)
+	relativeURL := fmt.Sprintf("zones/%s/records", zoneID)
 
-	response, err := self.requestor.Request(relativeUrl, "GET", []byte(""))
+	response, err := client.requestor.Request(relativeURL, "GET", []byte(""))
 	if err != nil {
 		logrus.Errorf("Failed to receive records: %s", err)
 		return nil, err
@@ -27,8 +28,9 @@ func (self *AuroraDNSClient) GetRecords(zoneId string) ([]records.GetRecordsResp
 	return respData, nil
 }
 
-func (self *AuroraDNSClient) CreateRecord(zoneId string, data records.CreateRecordRequest) (*records.CreateRecordResponse, error) {
-	logrus.Debugf("CreateRecord(%s, %+v)", zoneId, data)
+// CreateRecord creates a new record in given zone
+func (client *AuroraDNSClient) CreateRecord(zoneID string, data records.CreateRecordRequest) (*records.CreateRecordResponse, error) {
+	logrus.Debugf("CreateRecord(%s, %+v)", zoneID, data)
 	body, err := json.Marshal(data)
 	if err != nil {
 		logrus.Errorf("Failed to marshall request body: %s", err)
@@ -36,9 +38,9 @@ func (self *AuroraDNSClient) CreateRecord(zoneId string, data records.CreateReco
 		return nil, err
 	}
 
-	relativeUrl := fmt.Sprintf("zones/%s/records", zoneId)
+	relativeURL := fmt.Sprintf("zones/%s/records", zoneID)
 
-	response, err := self.requestor.Request(relativeUrl, "POST", body)
+	response, err := client.requestor.Request(relativeURL, "POST", body)
 	if err != nil {
 		logrus.Errorf("Failed to create record: %s", err)
 
@@ -56,11 +58,12 @@ func (self *AuroraDNSClient) CreateRecord(zoneId string, data records.CreateReco
 	return respData, nil
 }
 
-func (self *AuroraDNSClient) RemoveRecord(zoneId string, recordId string) (*records.RemoveRecordResponse, error) {
-	logrus.Debugf("RemoveRecord(%s, %s)", zoneId, recordId)
-	relativeUrl := fmt.Sprintf("zones/%s/records/%s", zoneId, recordId)
+// RemoveRecord removes a record corresponding to a particular id in a given zone
+func (client *AuroraDNSClient) RemoveRecord(zoneID string, recordID string) (*records.RemoveRecordResponse, error) {
+	logrus.Debugf("RemoveRecord(%s, %s)", zoneID, recordID)
+	relativeURL := fmt.Sprintf("zones/%s/records/%s", zoneID, recordID)
 
-	_, err := self.requestor.Request(relativeUrl, "DELETE", nil)
+	_, err := client.requestor.Request(relativeURL, "DELETE", nil)
 	if err != nil {
 		logrus.Errorf("Failed to remove record: %s", err)
 

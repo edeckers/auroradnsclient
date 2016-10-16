@@ -10,7 +10,8 @@ import (
 	"time"
 )
 
-func NewToken(userId string, key string, method string, action string, timestamp time.Time) string {
+// NewToken generates a token for accessing a specific method of the API
+func NewToken(userID string, key string, method string, action string, timestamp time.Time) string {
 	fmtTime := timestamp.Format("20060102T150405Z")
 	logrus.Debugf("Built timestamp: %s", fmtTime)
 
@@ -24,9 +25,9 @@ func NewToken(userId string, key string, method string, action string, timestamp
 	signature := base64.StdEncoding.EncodeToString([]byte(signatureHmac.Sum(nil)))
 	logrus.Debugf("Built signature: %s", signature)
 
-	userIdAndSignature := fmt.Sprintf("%s:%s", userId, signature)
+	userIDAndSignature := fmt.Sprintf("%s:%s", userID, signature)
 
-	token := base64.StdEncoding.EncodeToString([]byte(userIdAndSignature))
+	token := base64.StdEncoding.EncodeToString([]byte(userIDAndSignature))
 	logrus.Debugf("Built token: %s", token)
 
 	return token

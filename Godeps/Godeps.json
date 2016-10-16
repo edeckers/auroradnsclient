@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/edeckers/auroradns_client",
+	"ImportPath": "github.com/edeckers/auroradnsclient",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v74",
 	"Deps": [

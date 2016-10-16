@@ -16,6 +16,7 @@ help:
 	@echo "make build - build binary in the current environment"
 	@echo "make deps - install build dependencies"
 	@echo "make vet - run vet & gofmt checks"
+	@echo "make lint - run golint"
 	@echo "make test - run tests"
 	@echo "make clean - clean"
 	@echo "make release - tag with version and trigger CI release build"
@@ -26,12 +27,16 @@ build: build-dir
 
 deps:
 	go get github.com/tools/godep
+	go get github.com/golang/lint/golint
 
 vet:
 	scripts/vet
 
 test:
 	godep go test -v ./...
+
+lint:
+	@find . -type f -name \*.go | grep -v ^./vendor | xargs -n 1 golint
 
 release:
 	git tag --force -s `cat VERSION` -m `cat VERSION`

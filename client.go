@@ -1,15 +1,17 @@
-package auroradns_client
+package auroradnsclient
 
 import (
-	"github.com/edeckers/auroradns_client/requests"
+	"github.com/edeckers/auroradnsclient/requests"
 )
 
+// AuroraDNSClient is a client for accessing the Aurora DNS API
 type AuroraDNSClient struct {
 	requestor *requests.AuroraRequestor
 }
 
-func NewAuroraDNSClient(baseUrl string, userId string, key string) (*AuroraDNSClient, error) {
-	requestor, err := requests.NewAuroraRequestor(baseUrl, userId, key)
+// NewAuroraDNSClient instantiates a new client
+func NewAuroraDNSClient(endpoint string, userID string, key string) (*AuroraDNSClient, error) {
+	requestor, err := requests.NewAuroraRequestor(endpoint, userID, key)
 	if err != nil {
 		return nil, err
 	}

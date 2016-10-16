@@ -1,6 +1,7 @@
 package zones
 
+// ZoneRecord describes the json format for a zone
 type ZoneRecord struct {
-	Id   string `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }

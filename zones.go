@@ -1,14 +1,15 @@
-package auroradns_client
+package auroradnsclient
 
 import (
 	"encoding/json"
 	"github.com/Sirupsen/logrus"
-	"github.com/edeckers/auroradns_client/zones"
+	"github.com/edeckers/auroradnsclient/zones"
 )
 
-func (self *AuroraDNSClient) GetZones() ([]zones.ZoneRecord, error) {
+// GetZones returns a list of all zones
+func (client *AuroraDNSClient) GetZones() ([]zones.ZoneRecord, error) {
 	logrus.Debugf("GetZones")
-	response, err := self.requestor.Request("zones", "GET", []byte(""))
+	response, err := client.requestor.Request("zones", "GET", []byte(""))
 
 	if err != nil {
 		logrus.Errorf("Failed to get zones: %s", err)

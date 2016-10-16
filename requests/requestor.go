@@ -5,34 +5,36 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Sirupsen/logrus"
-	request_errors "github.com/edeckers/auroradns_client/requests/errors"
-	"github.com/edeckers/auroradns_client/tokens"
+	request_errors "github.com/edeckers/auroradnsclient/requests/errors"
+	"github.com/edeckers/auroradnsclient/tokens"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"time"
 )
 
+// AuroraRequestor performs actual requests to API
 type AuroraRequestor struct {
 	endpoint string
-	userId   string
+	userID   string
 	key      string
 }
 
-func NewAuroraRequestor(endpoint string, userId string, key string) (*AuroraRequestor, error) {
+// NewAuroraRequestor instantiates a new requestor
+func NewAuroraRequestor(endpoint string, userID string, key string) (*AuroraRequestor, error) {
 	if endpoint == "" {
 		return nil, fmt.Errorf("Aurora endpoint missing")
 	}
 
-	if userId == "" || key == "" {
+	if userID == "" || key == "" {
 		return nil, fmt.Errorf("Aurora credentials missing")
 	}
 
-	return &AuroraRequestor{endpoint: endpoint, userId: userId, key: key}, nil
+	return &AuroraRequestor{endpoint: endpoint, userID: userID, key: key}, nil
 }
 
-func (self *AuroraRequestor) buildRequest(relativeUrl string, method string, body []byte) (*http.Request, error) {
-	url := fmt.Sprintf("%s/%s", self.endpoint, relativeUrl)
+func (requestor *AuroraRequestor) buildRequest(relativeURL string, method string, body []byte) (*http.Request, error) {
+	url := fmt.Sprintf("%s/%s", requestor.endpoint, relativeURL)
 
 	request, err := http.NewRequest(method, url, bytes.NewReader(body))
 	if err != nil {
@@ -44,7 +46,7 @@ func (self *AuroraRequestor) buildRequest(relativeUrl string, method string, bod
 	timestamp := time.Now().UTC()
 	fmtTime := timestamp.Format("20060102T150405Z")
 
-	token := tokens.NewToken(self.userId, self.key, method, fmt.Sprintf("/%s", relativeUrl), timestamp)
+	token := tokens.NewToken(requestor.userID, requestor.key, method, fmt.Sprintf("/%s", relativeURL), timestamp)
 
 	request.Header.Set("X-AuroraDNS-Date", fmtTime)
 	request.Header.Set("Authorization", fmt.Sprintf("AuroraDNSv1 %s", token))
@@ -61,7 +63,7 @@ func (self *AuroraRequestor) buildRequest(relativeUrl string, method string, bod
 	return request, err
 }
 
-func (self *AuroraRequestor) testInvalidResponse(resp *http.Response, response []byte) ([]byte, error) {
+func (requestor *AuroraRequestor) testInvalidResponse(resp *http.Response, response []byte) ([]byte, error) {
 	if resp.StatusCode < 400 {
 		return response, nil
 	}
@@ -87,8 +89,9 @@ func (self *AuroraRequestor) testInvalidResponse(resp *http.Response, response [
 	return nil, mappedError
 }
 
-func (self *AuroraRequestor) Request(relativeUrl string, method string, body []byte) ([]byte, error) {
-	req, err := self.buildRequest(relativeUrl, method, body)
+// Request builds and executues a request to the API
+func (requestor *AuroraRequestor) Request(relativeURL string, method string, body []byte) ([]byte, error) {
+	req, err := requestor.buildRequest(relativeURL, method, body)
 
 	client := http.Client{Timeout: 30 * time.Second}
 	resp, err := client.Do(req)
@@ -111,7 +114,7 @@ func (self *AuroraRequestor) Request(relativeUrl string, method string, body []b
 		return nil, err
 	}
 
-	response, err = self.testInvalidResponse(resp, response)
+	response, err = requestor.testInvalidResponse(resp, response)
 	if err != nil {
 		return nil, err
 	}
