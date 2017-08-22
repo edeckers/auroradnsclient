@@ -1,8 +1,8 @@
 Aurora DNS API client
 =====================
 
-[![Build Status](https://img.shields.io/travis/edeckers/auroradns_client/master.svg?maxAge=2592000&style=flat-square)](https://travis-ci.org/edeckers/auroradns_client)
-[![License](https://img.shields.io/github/license/edeckers/auroradns_client.svg?maxAge=2592000&style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![Build Status](https://img.shields.io/travis/edeckers/auroradnsclient/master.svg?maxAge=2592000&style=flat-square)](https://travis-ci.org/edeckers/auroradnsclient)
+[![License](https://img.shields.io/github/license/edeckers/auroradnsclient.svg?maxAge=2592000&style=flat-square)](https://www.mozilla.org/en-US/MPL/2.0)
 
 An wrapper library for the Aurora DNS API, written in Go.
 
@@ -38,4 +38,4 @@ zones, err := client.GetZones()
 
 ## License
 
-`auroradns_client` is licensed under GPL - see the LICENSE file for details
+`auroradnsclient` is licensed under MPL-2.0 - see the LICENSE file for details
