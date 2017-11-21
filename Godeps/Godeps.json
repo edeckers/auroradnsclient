@@ -1,16 +1,24 @@
 {
 	"ImportPath": "github.com/edeckers/auroradnsclient",
-	"GoVersion": "go1.7",
-	"GodepVersion": "v74",
+	"GoVersion": "go1.8",
+	"GodepVersion": "v79",
 	"Deps": [
 		{
-			"ImportPath": "github.com/Sirupsen/logrus",
-			"Comment": "v0.10.0-38-g3ec0642",
-			"Rev": "3ec0642a7fb6488f65b06f9040adc67e3990296a"
+			"ImportPath": "github.com/sirupsen/logrus",
+			"Comment": "v1.0.3-19-g95cd2b9",
+			"Rev": "95cd2b9c79aa5e72ab0bc69b7ccc2be15bf850f6"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ssh/terminal",
+			"Rev": "9f005a07e0d31d45e6656d241bb5c0f2efd4bc94"
 		},
 		{
 			"ImportPath": "golang.org/x/sys/unix",
-			"Rev": "9bb9f0998d48b31547d975974935ae9b48c7a03c"
+			"Rev": "328643532ee3c60c099171d4ce2cad0ca0354ca9"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/windows",
+			"Rev": "328643532ee3c60c099171d4ce2cad0ca0354ca9"
 		}
 	]
 }
