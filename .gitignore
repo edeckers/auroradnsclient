@@ -1,4 +1,5 @@
 start
 tests
 client_test.go
-build
+build/
+vendor/

@@ -1,6 +1,6 @@
 language: go
 
-go: 1.8
+go: 1.11
 
 before_script:
   - git config --global user.email "e@mail.com"
