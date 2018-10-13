@@ -23,17 +23,16 @@ help:
 	@echo "make version - show app version"
 
 build: build-dir
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 godep go build -ldflags "-X main.Version=$(VERSION) -X main.Git=$(SHA)" -o build/$(PROJECT)-linux-amd64
+	GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-X main.Version=$(VERSION) -X main.Git=$(SHA)" -o build/$(PROJECT)-linux-amd64
 
 deps:
-	go get github.com/tools/godep
-	go get github.com/golang/lint/golint
+	GO111MODULE=on go get golang.org/x/lint/golint
 
 vet:
 	scripts/vet
 
 test:
-	godep go test -v ./...
+	GO111MODULE=on go test -v ./...
 
 lint:
 	@find . -type f -name \*.go | grep -v ^./vendor | xargs -n 1 golint
@@ -55,7 +54,7 @@ build-dir:
 	@rm -rf build && mkdir build
 
 $(PLATFORMS):
-	CGO_ENABLED=0 GOOS=$@ GOARCH=$(ARCH) godep go build -ldflags "-X main.Version=$(VERSION) -X main.Git=$(SHA) -w -s" -a -o build/$(PROJECT)-$@-$(ARCH)/$(PROJECT)
+	GO111MODULE=on CGO_ENABLED=0 GOOS=$@ GOARCH=$(ARCH) go build -ldflags "-X main.Version=$(VERSION) -X main.Git=$(SHA) -w -s" -a -o build/$(PROJECT)-$@-$(ARCH)/$(PROJECT)
 
 ci-release:
 	@previous_tag=$$(git describe --abbrev=0 --tags $(VERSION)^); \
