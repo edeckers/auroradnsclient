@@ -90,9 +90,13 @@ func (requestor *AuroraRequestor) testInvalidResponse(resp *http.Response, respo
 	return nil, mappedError
 }
 
-// Request builds and executues a request to the API
+// Request builds and executes a request to the API
 func (requestor *AuroraRequestor) Request(relativeURL string, method string, body []byte) ([]byte, error) {
 	req, err := requestor.buildRequest(relativeURL, method, body)
+	if err != nil {
+		logrus.Errorf("Failed to build request: %s", err)
+		return nil, err
+	}
 
 	client := http.Client{Timeout: 30 * time.Second}
 	resp, err := client.Do(req)
