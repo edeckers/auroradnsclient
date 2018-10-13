@@ -23,7 +23,7 @@ func NewToken(userID string, key string, method string, action string, timestamp
 
 	signatureHmac.Write([]byte(message))
 
-	signature := base64.StdEncoding.EncodeToString([]byte(signatureHmac.Sum(nil)))
+	signature := base64.StdEncoding.EncodeToString(signatureHmac.Sum(nil))
 	logrus.Debugf("Built signature: %s", signature)
 
 	userIDAndSignature := fmt.Sprintf("%s:%s", userID, signature)
