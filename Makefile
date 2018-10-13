@@ -26,7 +26,7 @@ build: build-dir
 	GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-X main.Version=$(VERSION) -X main.Git=$(SHA)" -o build/$(PROJECT)-linux-amd64
 
 deps:
-	go get github.com/golang/lint/golint
+	GO111MODULE=on go get golang.org/x/lint/golint
 
 vet:
 	scripts/vet
